@@ -29,6 +29,13 @@ body { font-family: "Pretendard", -apple-system, sans-serif; background: var(--u
 .topbar { height: var(--topbar-h); background: var(--ui-panel); border-bottom: 1px solid var(--ui-border); display: flex; align-items: center; padding: 0 20px; gap: 10px; flex-shrink: 0; position: relative; z-index: 100; }
 .tb-space { flex: 1; }
 
+.clinic-bar { padding: 14px 17px; border-bottom: 1px solid var(--ui-border); flex-shrink: 0; }
+.clinic-bar-label { font-size: 11px; font-weight: 600; color: var(--ui-md); margin-bottom: 7px; }
+.clinic-seg { display: flex; gap: 2px; background: var(--ui-surface); border: 1px solid var(--ui-border); border-radius: 10px; padding: 3px; }
+.clinic-seg button { flex: 1; height: 32px; padding: 0 10px; border: none; border-radius: 7px; background: none; font-size: 13px; font-weight: 600; color: var(--ui-md); cursor: pointer; font-family: inherit; transition: background .12s, color .12s; }
+.clinic-seg button:hover { color: var(--ui-hi); }
+.clinic-seg button.on { background: var(--ui-panel); color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+
 .split { display: flex; border-radius: 9px; overflow: hidden; flex-shrink: 0; }
 .split.save { border: 1px solid var(--ui-border); }
 .split.save .s-main { height: 36px; padding: 0 14px; background: var(--ui-surface); color: var(--ui-hi); border: none; border-right: 1px solid var(--ui-border); font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: background .12s; }
@@ -212,7 +219,7 @@ body { font-family: "Pretendard", -apple-system, sans-serif; background: var(--u
 <div class="main-layout">
   <div class="canvas-area">
     <div id="poster-canvas">
-      <img class="poster-top-img" src="https://djat5i2cugmqc.cloudfront.net/design_contents/onlif_new_members_v260703.jpg" alt="온리프 상단">
+      <img class="poster-top-img" id="poster-top-img" src="https://djat5i2cugmqc.cloudfront.net/design_contents/onlif_new_members_v260703.jpg" alt="온리프 상단">
       <div class="people-section">
         <div class="people-box">
           <div class="people-block">
@@ -290,6 +297,13 @@ body { font-family: "Pretendard", -apple-system, sans-serif; background: var(--u
   <div class="resize-handle" id="resize-handle"></div>
 
   <div class="sidebar" id="sidebar">
+    <div class="clinic-bar">
+      <div class="clinic-bar-label">의원 선택</div>
+      <div class="clinic-seg" id="clinic-seg">
+        <button class="on" data-clinic="onlif" onclick="setClinic('onlif')">온리프의원</button>
+        <button data-clinic="milk" onclick="setClinic('milk')">우유빛의원</button>
+      </div>
+    </div>
     <div class="tab-bar">
       <button class="tab-btn on" id="tab-btn-team" onclick="switchTab('tab-team',this)">팀 소개</button>
       <button class="tab-btn" id="tab-btn-pos1" onclick="switchTab('tab-pos1',this)">포지션 1</button>
@@ -412,6 +426,18 @@ body { font-family: "Pretendard", -apple-system, sans-serif; background: var(--u
 
 <script>
   var BRAND_COLOR = "#8EB9D7";
+
+  var CLINIC_IMAGES = {
+    onlif: "https://djat5i2cugmqc.cloudfront.net/design_contents/onlif_new_members_v260703.jpg",
+    milk:  "https://djat5i2cugmqc.cloudfront.net/design_contents/onlif_milk_new_members_v260727.jpg"
+  };
+  function setClinic(clinic) {
+    if (!CLINIC_IMAGES[clinic]) return;
+    document.getElementById("poster-top-img").src = CLINIC_IMAGES[clinic];
+    document.querySelectorAll("#clinic-seg button").forEach(function(b){ b.classList.toggle("on", b.dataset.clinic === clinic); });
+    localStorage.setItem("onlif_clinic", clinic);
+  }
+  setClinic(localStorage.getItem("onlif_clinic") || "onlif");
 
   (function() {
     var handle = document.getElementById('resize-handle'), sidebar = document.getElementById('sidebar');
