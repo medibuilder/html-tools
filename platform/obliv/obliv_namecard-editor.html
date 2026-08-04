@@ -354,7 +354,7 @@ body{font-family:'Pretendard',-apple-system,sans-serif;background:transparent;mi
       pdf.line(tx1,ty2+g,tx1,ty2+g+L); pdf.line(tx1-g-L,ty2,tx1-g,ty2); // 좌하
       pdf.line(tx2,ty2+g,tx2,ty2+g+L); pdf.line(tx2+g,ty2,tx2+g+L,ty2); // 우하
     }
-    var pdf=new jsPDF({orientation:'landscape',unit:'pt',format:[pageW,pageH]});
+    var pdf=new jsPDF({orientation:'landscape',unit:'pt',format:[pageW,pageH],putOnlyUsedFonts:true});
     var cf=await captureCard('card-front-'+currentBrand);
     var cb=await captureCard('card-back-'+currentBrand);
     if(!cf||!cb)return;
